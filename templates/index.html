@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header>
+    <h1>Secret Santa</h1>
+</header>
+
+{% if not deadline_passed %}
+<div class="deadline-banner">
+    ⚠️ Note: You can only change your choice until December 10, 2025.
+</div>
+{% endif %}
+
+<main>
+    <div id="message-area"></div>
+    <div class="recipients-grid" id="recipients-list">
+        <!-- Recipients will be loaded here via JS -->
+    </div>
+</main>
+{% endblock %}

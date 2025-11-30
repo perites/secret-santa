@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header>
+    <h1>Workshop Admin</h1>
+    <a href="{{ url_for('index') }}" class="admin-link">← Back to List</a>
+</header>
+
+<main class="admin-panel glass-card">
+    <div id="message-area"></div>
+
+    <div id="login-section" style="display: none;">
+        <div class="login-form">
+            <h2>Security Check</h2>
+            <p>Please enter the workshop PIN to continue.</p>
+            <input type="password" id="admin-pin" class="admin-input" placeholder="PIN"
+                onkeypress="handlePinEnter(event)">
+            <button class="btn-take" onclick="verifyPin()" style="margin-top: 10px;">Unlock</button>
+        </div>
+    </div>
+
+    <div id="admin-content" style="display: none;">
+        <h2 id="form-title">Add New Recipient</h2>
+        <div class="admin-form">
+            <input type="hidden" id="edit-recipient-id">
+            <input type="text" id="new-recipient-name" class="admin-input" placeholder="Enter name...">
+            <input type="file" id="new-recipient-image" class="admin-input" accept="image/*">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-add" id="submit-btn" onclick="handleFormSubmit()">Add Recipient</button>
+                <button class="btn-untake" id="cancel-btn" onclick="cancelEdit()"
+                    style="display: none; width: auto;">Cancel</button>
+            </div>
+        </div>
+
+        <h3>Manage Recipients</h3>
+        <div class="recipients-grid" id="recipients-list">
+            <!-- Admin list -->
+        </div>
+    </div>
+</main>
+{% endblock %}
