@@ -1,20 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<header>
+<header class="site-header">
+    <span class="star" aria-hidden="true">✦</span>
     <h1>Secret Santa</h1>
+    <div class="whoami">
+        Hi, <strong>{{ me.name }}</strong>
+        <span class="dot" aria-hidden="true">·</span>
+        <form method="post" action="{{ url_for('logout') }}" id="logout-form">
+            <button type="submit" class="btn-link">Not you?</button>
+        </form>
+    </div>
 </header>
 
-{% if not deadline_passed %}
-<div class="deadline-banner">
-    ⚠️ Note: You can only change your choice until December 10, 2025.
-</div>
-{% endif %}
+<p class="notice {% if deadline_passed %}notice-closed{% endif %}">
+    {% if gift_budget %}Gift budget: <strong>{{ gift_budget }}</strong> <span class="dot" aria-hidden="true">·</span>{% endif %}
+    {% if deadline_passed %}
+    Picks and wishlists closed on {{ deadline_label }}
+    {% else %}
+    Picks and wishlists close on {{ deadline_label }}
+    {% endif %}
+</p>
 
 <main>
-    <div id="message-area"></div>
-    <div class="recipients-grid" id="recipients-list">
-        <!-- Recipients will be loaded here via JS -->
+    <div class="top-grid">
+        <section id="giving-to" class="panel giving-to is-empty">
+            <div class="card-head">
+                <div id="giving-to-avatar"></div>
+                <div>
+                    <p class="eyebrow">You're the Secret Santa for</p>
+                    <h2 id="giving-to-name" class="giving-to-name">…</h2>
+                </div>
+            </div>
+            <div id="giving-to-wishes"></div>
+            <div id="giving-to-actions" class="giving-to-actions"></div>
+        </section>
+
+        <section class="panel my-wishlist">
+            <div class="card-head">
+                <div id="my-avatar"></div>
+                <div>
+                    <p class="eyebrow">My wishlist</p>
+                    <h2>Three things I'd love</h2>
+                </div>
+            </div>
+            <form id="wishlist-form" class="wishlist-form">
+                {% for wish in me.wish_slots %}
+                <label class="wish-field">
+                    <span class="wish-number" aria-hidden="true">{{ loop.index }}</span>
+                    <textarea name="wish" class="input wish-textarea" rows="2" aria-label="Wish {{ loop.index }}"
+                        placeholder="{{ loop.cycle('Cozy socks', 'A good book', 'Hot chocolate') }}"
+                        maxlength="{{ wish_max_length }}" {% if deadline_passed %}disabled{% endif %}>{{ wish }}</textarea>
+                </label>
+                {% endfor %}
+                {% if not deadline_passed %}
+                <button type="submit" class="btn btn-primary">Save wishlist</button>
+                {% endif %}
+            </form>
+        </section>
     </div>
+
+    <section class="people" id="people-section">
+        <div class="section-title">
+            <h2>Who will you give a gift to?</h2>
+            <p>Pick one person to see their wishlist. Nobody will know it was you.</p>
+        </div>
+        <div class="people-grid" id="participants-list">
+            <!-- Participants are loaded here by main.js -->
+        </div>
+    </section>
 </main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
 {% endblock %}

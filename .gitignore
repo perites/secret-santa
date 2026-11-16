@@ -1,4 +1,7 @@
 /venv/
+/.venv/
 /static/uploads/
 /instance/
-/__pycache__/
+__pycache__/
+.env
+.DS_Store

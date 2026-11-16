@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="welcome">
+    <div class="bauble" aria-hidden="true"></div>
+    <section class="panel welcome-card">
+        <h1>Secret Santa</h1>
+        {% if invalid_link %}
+        <h2>This link doesn't work</h2>
+        <p>
+            It may be mistyped, or the organizer may have replaced it with a new one.
+            Ask the organizer for your current personal link.
+        </p>
+        {% else %}
+        <h2>Welcome!</h2>
+        <p>Open the personal link the organizer sent you to join.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
